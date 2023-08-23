@@ -29,7 +29,11 @@ class HitMePlayer(BasePlayer):
             self.stand(game_state)
 ```
 
-class MyBot(CardBot):
-  # Do things here
+From there you can use the following functions to program your bot:
 
+```python
+self.hit(game_state) # This will have the dealer give you another card
+self.stand(game_state) # This will stand, and keep your current hand
+self.double_down(game_state) # This will double your bet and have the dealer give you another card
+self.get_total(game_state) # This will return the current total value of your hand
 ```
