@@ -7,4 +7,4 @@ class HitMePlayer(BasePlayer):
         if self.get_total(game_state) < 17:
             self.hit(game_state)
         else:
-            self.done = True
+            self.stand(game_state)
