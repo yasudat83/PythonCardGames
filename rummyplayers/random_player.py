@@ -1,11 +1,9 @@
 import random
-class BasePlayer:
+from .base_player import BasePlayer
+class RandomPlayer(BasePlayer):
     def __init__(self):
-        self.name = "Base"
+        self.name = "Random"
         self.hand = []
-
-    def draw_card(self, card):
-        self.hand.append(card)
 
     def take_turn(self, game_state):
         print(f"{self.name}'s hand:", self.hand)
