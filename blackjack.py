@@ -1,10 +1,10 @@
 import os
 import random
-from rummyplayers.base_player import BasePlayer
+from blackjackplayers.base_player import BasePlayer
 from importlib import import_module
 
 # Load player plugins
-player_folder = 'rummyplayers'
+player_folder = 'blackjackplayers'
 player_files = [f[:-3] for f in os.listdir(player_folder) if f.endswith('.py') and f != 'base_player.py']
 
 players = []
