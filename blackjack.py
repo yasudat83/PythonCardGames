@@ -24,8 +24,8 @@ def play_blackjack(players):
     # Initialize the game
     random.shuffle(deck)
     
-    dealer = BasePlayer()
-    
+    dealer = BasePlayer("Dealer")
+    pot = 0
     # Deal cards to players
     for _ in range(2):  # Deal 2 cards each
         for player in players:
@@ -33,6 +33,12 @@ def play_blackjack(players):
             player.hand.append(card)
         card = deck.pop()
         dealer.hand.append(card)
+    
+    for player in players:
+        player.bet += 100
+        player.bank -= 100
+        pot += 100
+    
     
     game_state = {"deck": deck, "upcard": dealer.hand[0]}
     
@@ -43,12 +49,10 @@ def play_blackjack(players):
         print(f"{player.name}'s Turn")
         player.take_turn(game_state)  # Assuming take_turn modifies the hand
         player_total = player.get_total(game_state)
-        print(f"{player.name} ended with {player.hand}")
-        if player_total > 21:
-            print(f"{player.name} Busted with {player_total} points")
-        else:
-            print(f"{player.name} ended with {player_total} points")
             
+    while dealer.private_total() < 17:
+        dealer.hit(game_state)
+    
     winner = None
     max = 0
     
@@ -64,18 +68,26 @@ def play_blackjack(players):
         print(f"{dealer.name} ended with {max} points")
     
     for player in players:
-        if player.get_total(game_state) > 21:
-            pass
+        player_total = player.get_total(game_state)
+        print(f"{player.name} ended with {player.hand}")
+        if player_total > 21 or player.fold:
+            print(f"{player.name} is out with {player_total} points")
         else:
+            print(f"{player.name} ended with {player_total} points")
             if player.get_total(game_state) > max:
                 max = player.get_total(game_state)
                 winner = player
+                
     
     if winner is None:
         print("No one wins")
     else:
         print(f"Winner is {winner.name} with {max} points")
-
+        winner.bank += pot
+        
+    for player in players:
+        print(f"{player.name} has {player.bank} in the bank")
+        
 
 if __name__ == '__main__':
     play_blackjack(players)

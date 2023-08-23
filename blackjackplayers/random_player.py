@@ -2,8 +2,7 @@ import random
 from .base_player import BasePlayer
 class RandomPlayer(BasePlayer):
     def __init__(self):
-        self.name = "Random"
-        self.hand = []
+        super().__init__("Random")
 
     def take_turn(self, game_state):
         # Map the option name to the corresponding function

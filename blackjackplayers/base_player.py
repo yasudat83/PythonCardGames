@@ -1,9 +1,11 @@
 import random
 class BasePlayer:
-    def __init__(self):
-        self.name = "Dealer"
+    def __init__(self, name):
+        self.name = name
         self.hand = []
-        self.bust = False
+        self.fold = False
+        self.bet = 0
+        self.bank = 1000
 
     def private_total(self):
         total = 0
