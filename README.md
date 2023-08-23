@@ -11,3 +11,15 @@ Then you can run the program with
 ```bash
 python main.py
 ```
+
+# Bot Programming
+
+To make a bot, first import our bot base.
+
+```python
+from .cardbot import CardBot
+
+class MyBot(CardBot):
+  # Do things here
+
+```
