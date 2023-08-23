@@ -5,6 +5,26 @@ class BasePlayer:
         self.hand = []
         self.bust = False
 
+    def private_total(self):
+        total = 0
+        aces = 0
+        for card in self.hand:
+            if card[0] == 'J' or card[0] == 'Q' or card[0] == 'K':
+                total += 10
+            elif card[0] == 'A':
+                aces += 1
+            else:
+                total += int(card[0])
+                
+        if aces > 1:
+            for _ in range(aces):
+                total += 1
+            if total + 10 < 21:
+                total += 10
+        elif aces == 1 and total + 11 < 21:
+            total += 11
+        return total
+    
     def get_total(self, game_state):
         total = 0
         aces = 0

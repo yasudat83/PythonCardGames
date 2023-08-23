@@ -52,7 +52,7 @@ def play_blackjack(players):
     winner = None
     max = 0
     
-    dealer_total = dealer.get_total(game_state)
+    dealer_total = dealer.private_total()
     
     if dealer_total > 21:
         print("Dealer Busts, everyone Wins")
@@ -60,6 +60,8 @@ def play_blackjack(players):
     else:
         winner = dealer
         max = dealer_total
+        print(f"Dealer ended with {dealer.hand}")
+        print(f"{dealer.name} ended with {max} points")
     
     for player in players:
         if player.get_total(game_state) > 21:
