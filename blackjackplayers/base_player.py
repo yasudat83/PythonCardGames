@@ -6,6 +6,12 @@ class BasePlayer:
         self.fold = False
         self.bet = 0
         self.bank = 1000
+        self.done = False
+
+    def reset(self):
+        self.hand = []
+        self.fold = False
+        self.done = False
 
     def private_total(self):
         total = 0
@@ -58,12 +64,20 @@ class BasePlayer:
         print(f"{self.name}'s turn: Hit")
         drawn_card = game_state['deck'].pop()
         self.hand.append(drawn_card)
+        total = self.get_total(game_state)
+        if total > 21 :
+            self.done = True
     
     def stand(self, game_state):
         print(f"{self.name}'s turn: Stand")
+        self.done = True
     
     def double_down(self, game_state):
         print(f"{self.name}'s turn: Double Down")
+        game_state["pot"] += self.bet
+        self.bank -= self.bet
+        self.bet += self.bet
+        self.hit(game_state)
     
     def split(self, game_state):
         print(f"{self.name}'s turn: Split")

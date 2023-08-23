@@ -16,11 +16,11 @@ for player_file in player_files:
             players.append(player_class())
 
 # Define your deck of cards
-suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
-ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-deck = [(rank, suit) for suit in suits for rank in ranks]
 
 def play_blackjack(players):
+    suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+    ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    deck = [(rank, suit) for suit in suits for rank in ranks]
     # Initialize the game
     random.shuffle(deck)
     
@@ -40,54 +40,61 @@ def play_blackjack(players):
         pot += 100
     
     
-    game_state = {"deck": deck, "upcard": dealer.hand[0]}
+    game_state = {"deck": deck, "upcard": dealer.hand[0], "pot": pot}
     
     print(f"Upcard is: {game_state['upcard']}")
     
     # Simulate player turns
     for player in players:
-        print(f"{player.name}'s Turn")
-        player.take_turn(game_state)  # Assuming take_turn modifies the hand
-        player_total = player.get_total(game_state)
+        while not player.done:
+            player.take_turn(game_state)  # Assuming take_turn modifies the hand
+            player_total = player.get_total(game_state)
             
     while dealer.private_total() < 17:
         dealer.hit(game_state)
     
-    winner = None
+    winners = []
     max = 0
     
     dealer_total = dealer.private_total()
+    print(f"Dealer ended with {dealer.hand}")
+    print(f"{dealer.name} ended with {dealer_total} points")
     
     if dealer_total > 21:
-        print("Dealer Busts, everyone Wins")
-        exit()
-    else:
-        winner = dealer
-        max = dealer_total
-        print(f"Dealer ended with {dealer.hand}")
-        print(f"{dealer.name} ended with {max} points")
+        print("Dealer Busts")
+        dealer_total = 0
     
     for player in players:
         player_total = player.get_total(game_state)
         print(f"{player.name} ended with {player.hand}")
         if player_total > 21 or player.fold:
             print(f"{player.name} is out with {player_total} points")
+        elif player_total > dealer_total:
+            print(f"{player.name} won with {player_total} points")
+            winners.append(player)
         else:
             print(f"{player.name} ended with {player_total} points")
-            if player.get_total(game_state) > max:
-                max = player.get_total(game_state)
-                winner = player
                 
     
-    if winner is None:
-        print("No one wins")
-    else:
-        print(f"Winner is {winner.name} with {max} points")
-        winner.bank += pot
-        
+    if len(winners) > 0:
+        pot_split = game_state["pot"]/len(winners)
+    
+        for winner in winners:
+            winner.bank += pot_split
+            
     for player in players:
         print(f"{player.name} has {player.bank} in the bank")
+        player.reset()
         
 
 if __name__ == '__main__':
-    play_blackjack(players)
+    original = players.copy()
+    while len(players)>1:
+        play_blackjack(players)
+        print()
+        for player in players:
+            if player.bank <=0:
+                players.remove(player)
+                print(f"Player {player.name} is out due to lack of funds")
+    
+    print(f"{players[0].name} WINS!!!")
