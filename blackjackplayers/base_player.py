@@ -12,6 +12,7 @@ class BasePlayer:
         self.hand = []
         self.fold = False
         self.done = False
+        self.bet = 0
 
     def private_total(self):
         total = 0
@@ -78,6 +79,7 @@ class BasePlayer:
         self.bank -= self.bet
         self.bet += self.bet
         self.hit(game_state)
+        self.stand(game_state)
     
     def split(self, game_state):
         print(f"{self.name}'s turn: Split")
