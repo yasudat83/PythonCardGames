@@ -14,7 +14,7 @@ python main.py
 
 # Bot Programming
 
-To make a bot, first import our bot base, then overwrite the take_turn function like this:
+To make a bot, create a file in the blackjackplayers directory, then make a subclass of the baseplayer like this:
 
 ```python
 from .base_player import BasePlayer
