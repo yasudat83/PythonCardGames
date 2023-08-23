@@ -20,25 +20,60 @@ suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
 ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 deck = [(rank, suit) for suit in suits for rank in ranks]
 
-def play_rummy(players):
+def play_blackjack(players):
     # Initialize the game
     random.shuffle(deck)
     
+    dealer = BasePlayer()
+    
     # Deal cards to players
-    for _ in range(7):  # Deal 7 cards each
+    for _ in range(2):  # Deal 2 cards each
         for player in players:
             card = deck.pop()
             player.hand.append(card)
+        card = deck.pop()
+        dealer.hand.append(card)
     
-    game_state = {"deck": deck, "discard_pile": []}
+    game_state = {"deck": deck, "upcard": dealer.hand[0]}
     
-    while game_state["deck"]:    
-        # Simulate player turns
-        for player in players:
-            print(f"{player.name}'s turn:")
-            player.take_turn(game_state)  # Assuming take_turn modifies the hand
-            print()
+    print(f"Upcard is: {game_state['upcard']}")
+    
+    # Simulate player turns
+    for player in players:
+        print(f"{player.name}'s Turn")
+        player.take_turn(game_state)  # Assuming take_turn modifies the hand
+        player_total = player.get_total(game_state)
+        print(f"{player.name} ended with {player.hand}")
+        if player_total > 21:
+            print(f"{player.name} Busted with {player_total} points")
+        else:
+            print(f"{player.name} ended with {player_total} points")
+            
+    winner = None
+    max = 0
+    
+    dealer_total = dealer.get_total(game_state)
+    
+    if dealer_total > 21:
+        print("Dealer Busts, everyone Wins")
+        exit()
+    else:
+        winner = dealer
+        max = dealer_total
+    
+    for player in players:
+        if player.get_total(game_state) > 21:
+            pass
+        else:
+            if player.get_total(game_state) > max:
+                max = player.get_total(game_state)
+                winner = player
+    
+    if winner is None:
+        print("No one wins")
+    else:
+        print(f"Winner is {winner.name} with {max} points")
 
 
 if __name__ == '__main__':
-    play_rummy(players)
+    play_blackjack(players)
