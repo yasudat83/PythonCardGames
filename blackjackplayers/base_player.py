@@ -80,14 +80,5 @@ class BasePlayer:
         self.bet += self.bet
         self.hit(game_state)
         self.stand(game_state)
-    
-    def split(self, game_state):
-        print(f"{self.name}'s turn: Split")
-    def surrender(self, game_state):
-        print(f"{self.name}'s turn: Surrender")
-    
-    def insurance(self, game_state):
-        print(f"{self.name}'s turn: Insurance")
-
     def take_turn(self, game_state):
         self.surrender()
