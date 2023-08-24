@@ -75,10 +75,18 @@ class BasePlayer:
     
     def double_down(self, game_state):
         print(f"{self.name}'s turn: Double Down")
-        game_state["pot"] += self.bet
-        self.bank -= self.bet
-        self.bet += self.bet
-        self.hit(game_state)
-        self.stand(game_state)
+        
+        if self.bank > self.bet:
+            game_state["pot"] += self.bet
+            self.bank -= self.bet
+            self.bet += self.bet
+            self.hit(game_state)
+            self.stand(game_state)
+        else:
+            self.bet += self.bank
+            self.bank = 0
+            self.hit(game_state)
+            self.stand(game_state)
+            
     def take_turn(self, game_state):
         self.surrender()
