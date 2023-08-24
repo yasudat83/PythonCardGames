@@ -9,13 +9,10 @@ class RandomPlayer(BasePlayer):
         option_to_function = {
             "hit": self.hit,
             "stand": self.stand,
-            "double_down": self.double_down,
-            "split": self.split,
-            "surrender": self.surrender,
-            "insurance": self.insurance
+            "double_down": self.double_down
         }
         # List of available functions
-        options = ["hit", "stand", "double_down", "split", "surrender", "insurance"]
+        options = ["hit", "stand", "double_down"]
         selected_option = random.choice(options)
         selected_function = option_to_function[selected_option]
         selected_function(game_state)
