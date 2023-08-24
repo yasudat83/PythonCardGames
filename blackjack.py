@@ -1,6 +1,5 @@
 import os
 import random
-import time
 from blackjackplayers.base_player import BasePlayer
 from importlib import import_module
 
@@ -97,6 +96,6 @@ if __name__ == '__main__':
             if player.bank <=0:
                 players.remove(player)
                 print(f"Player {player.name} is out due to lack of funds")
-            time.sleep(.5)
+        input("Press Enter to Continue")
     
     print(f"{players[0].name} WINS!!!")
